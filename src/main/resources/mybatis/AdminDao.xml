@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.inuyasha.model.dao.AdminDao">
+
+	<!--登录查询-->
+	<select id="selectAdminUserByLogin" parameterType="string" resultType="json">
+		SELECT
+		a.`id`                AS `id`
+		, a.`merchant_id`     AS `merchantId`
+		, a.`fullname`        AS `fullname`
+		, a.`mobile`          AS `mobile`
+		, a.`email`           AS `email`
+		, a.`username`        AS `username`
+		, a.`status`          AS `status`
+		, a.`open_id`         AS `openId`
+		, a.`password`        AS `password`
+		, a.`last_login_ua`   AS `lastLoginUa`
+		, a.`last_login_ip`   AS `lastLoginIp`
+		, a.`last_login_time` AS `lastLoginTime`
+		, a.`ticket` 		  AS `ticket`
+		, a.`created`         AS `created`
+		, a.`updated`         AS `updated`
+		, c.`assets`          AS `assets`
+		FROM `t_admin_user` a LEFT JOIN `t_admin_user_role` b ON a.`id` = b.`user_id`
+		LEFT JOIN `t_role` c ON b.`role_id` = c.`id`
+		WHERE a.`deleted` IS NULL
+		AND( a.`username` = #{login}
+		OR a.`mobile`      = #{login})
+	</select>
+
+	<!--通过id 查询管理员-->
+	<select id="selectAdminUserById" parameterType="int" resultType="json">
+		SELECT
+		`id`                        AS `id`
+		, `username`                AS `username`
+		, `password`                AS `password`
+		, `mobile`                  AS `mobile`
+		, `fullname`                AS `fullname`
+		, `status`                  AS `status`
+		, `open_id`                 AS `openId`
+		, `last_login_ip`           AS `lastLoginIp`
+		, `last_login_time`         AS `lastLoginTime`
+		, `last_login_ua`           AS `lastLoginUa`
+		, `created`                 AS `created`
+		, `email`                   AS `email`
+		, `ticket`                  AS `ticket`
+		FROM `t_admin_user` WHERE `id` = #{id}
+	</select>
+
+	<!--更新管理员登录记录-->
+	<update id="updateAdminUserLogin" parameterType="json">
+		UPDATE `t_admin_user`
+		<set>
+			<if test="lastLoginUa!=null and lastLoginUa!=''">
+				`last_login_ua` = #{lastLoginUa},
+			</if>
+			<if test="lastLoginIp!=null and lastLoginIp!=''">
+				`last_login_ip` = #{lastLoginIp},
+			</if>
+			`last_login_time` = NOW()
+		</set>
+		WHERE  `id` = #{id}
+	</update>
+
+	<!--统计管理员总数-->
+	<select id="selectAdminUserCount" resultType="int">
+		SELECT COUNT(*) FROM `t_admin_user`
+	</select>
+
+	<!--添加管理员-->
+	<insert id="insertAdminUser" parameterType="json">
+		INSERT INTO `t_admin_user`(
+		`fullname`
+		, `mobile`
+		, `email`
+		, `username`
+		, `password`
+		, `status`
+		, `ticket`
+		, `created`
+		)VALUE (
+		#{fullname}
+		, #{mobile}
+		, #{email}
+		, #{username}
+		, #{password}
+		, 1
+		, #{ticket}
+		, NOW()
+		)
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!--查询管理员条数-->
+	<select id="countAccount" parameterType="json" resultType="int">
+		SELECT count(*) FROM `t_admin_user` A
+		<where>
+			A.`deleted` IS NULL
+			<if test="mobile!=null and mobile!=''">
+				AND A.`mobile` LIKE CONCAT('%',#{mobile},'%')
+			</if>
+			<if test="fullname!=null and fullname!=''">
+				AND A.`fullname` LIKE CONCAT('%',#{fullname},'%')
+			</if>
+		</where>
+	</select>
+
+	<!--查询管理员集合-->
+	<select id="selectAccountQuery" parameterType="json" resultType="json">
+		SELECT
+		tau.`id`                        AS `id`
+		, tau.`username`                AS `username`
+		, tau.`password`                AS `password`
+		, tau.`mobile`                  AS `mobile`
+		, tau.`status`                  AS `status`
+		, tau.`open_id`                 AS `openId`
+		, tau.`fullname`                AS `fullname`
+		, tau.`last_login_ip`           AS `lastLoginIp`
+		, tau.`last_login_time`         AS `lastLoginTime`
+		, tau.`ticket`         			AS `ticket`
+		, tau.`created`                 AS `created`
+
+		FROM `t_admin_user` tau
+
+		<where>
+			tau.`deleted` IS NULL
+			<if test="mobile!=null and mobile!=''">
+				AND tau.`mobile` LIKE CONCAT('%',#{mobile},'%')
+			</if>
+			<if test="fullname!=null and fullname!=''">
+				AND tau.`fullname` LIKE CONCAT('%',#{fullname},'%')
+			</if>
+		</where>
+		LIMIT #{start},#{pageSize}
+	</select>
+
+    <!--修改管理员信息-->
+    <update id="updateAdminUser" parameterType="json">
+        UPDATE `t_admin_user`
+        <set>
+            <if test="username!=null and username!=''">
+                `username` = #{username} ,
+            </if>
+
+            <if test="password!=null and password!=''">
+                `password` = #{password} ,
+            </if>
+
+            <if test="mobile!=null and mobile!=''">
+                `mobile` = #{mobile} ,
+            </if>
+
+            <if test="fullname!=null and fullname!=''">
+                `fullname` = #{fullname} ,
+            </if>
+
+            <if test="email!=null and email!=''">
+                `email` = #{email} ,
+            </if>
+
+			<if test="status!=null">
+				`status` = #{status} ,
+			</if>
+
+			<if test="ticket!=null and ticket!=''">
+				`ticket` = #{ticket} ,
+			</if>
+            `updated` = NOW()
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+    <!--删除管理员-->
+    <delete id="deleteAdminUser" parameterType="int">
+        DELETE FROM `t_admin_user`  WHERE `id` = #{id}
+    </delete>
+
+
+</mapper>
