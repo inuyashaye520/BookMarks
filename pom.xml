@@ -29,6 +29,15 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.39</version>
@@ -54,6 +63,97 @@
             <version>1.4.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>target/classes/templates</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>target/classes/static/assets</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <srcdir>src/main/resources/assets</srcdir>
+                    <triggerfiles>
+                        <triggerfile>Gulpfile.js</triggerfile>
+                        <triggerfile>package.json</triggerfile>
+                    </triggerfiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v4.4.4</nodeVersion>
+                            <npmVersion>2.15.1</npmVersion>
+                            <nodeDownloadRoot>http://npm.taobao.org/mirrors/node/</nodeDownloadRoot>
+                            <npmDownloadRoot>http://registry.npm.taobao.org/npm/-/</npmDownloadRoot>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install --disturl=http://npm.taobao.org/dist</arguments>
+                            <npmRegistryURL>http://registry.npm.taobao.org</npmRegistryURL>
+                            <environmentVariables>
+                                <SASS_BINARY_SITE>https://npm.taobao.org/mirrors/node-sass
+                                </SASS_BINARY_SITE>
+                            </environmentVariables>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>gulp build</id>
+                        <goals>
+                            <goal>gulp</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 
 
 </project>
