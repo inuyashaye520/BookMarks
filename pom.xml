@@ -78,6 +78,12 @@
             <version>2.6</version>
         </dependency>
         <dependency>
+            <groupId>com.github.bingoohuang</groupId>
+            <artifactId>patchca</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--web-->
+        <dependency>
             <groupId>org.webjars.bower</groupId>
             <artifactId>gentelella</artifactId>
             <version>1.4.0</version>
@@ -94,24 +100,8 @@
         </dependency>
         <dependency>
             <groupId>org.webjars.bower</groupId>
-            <artifactId>ng-ueditor</artifactId>
-            <version>0.3.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.webjars.bower</groupId>
-                    <artifactId>angular</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars.bower</groupId>
             <artifactId>angular-ui-bootstrap-bower</artifactId>
             <version>2.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars.bower</groupId>
-            <artifactId>weui</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.webjars.bower</groupId>
@@ -145,11 +135,6 @@
         </dependency>
         <dependency>
             <groupId>org.webjars.bower</groupId>
-            <artifactId>ng-scrollbars</artifactId>
-            <version>0.0.11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars.bower</groupId>
             <artifactId>angular-spinner</artifactId>
             <version>0.8.1</version>
         </dependency>
@@ -164,24 +149,9 @@
             <version>1.5.8</version>
         </dependency>
         <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>swiper</artifactId>
-            <version>3.4.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.webjars.bower</groupId>
             <artifactId>ng-file-upload</artifactId>
             <version>12.2.13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.imgscalr</groupId>
-            <artifactId>imgscalr-lib</artifactId>
-            <version>4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.bingoohuang</groupId>
-            <artifactId>patchca</artifactId>
-            <version>0.0.1</version>
         </dependency>
     </dependencies>
 

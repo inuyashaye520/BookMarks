@@ -1,0 +1,42 @@
+.spinner-container [us-spinner]:not(:empty):before {
+  background-color: rgba(37, 37, 37, 0.2);
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  content: "";
+  z-index: 2000000000;
+}
+
+.spinner-container {
+  position: relative;
+}
+
+#module-admin-bookmark {
+  .text-middle {
+    vertical-align: middle;
+  }
+  .container.body {
+    .top_nav {
+      .dropdown-menu {
+        .divider {
+          margin: 0 0;
+        }
+      }
+    }
+    .right_col {
+      background-color: #ffffff;
+      .nav-tabs {
+        .form-group {
+          margin-bottom: 0;
+        }
+        .top_search {
+          .iconfont {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
